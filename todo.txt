@@ -1,0 +1,9 @@
+Organise code into logical modules
+
+Allow plotting functions to except axes objects
+
+Dependencies?
+
+Add asymmetric games
+
+Add agent based model
