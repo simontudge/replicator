@@ -21,9 +21,9 @@ def alpha_sweep( G, a0 = 0, af = 1, steps = 11 ):
 	pl.ylabel('Payoff')
 	pl.show()
 
-class replicator:
+class Replicator:
 
-	def __init__( self, game, tf = 'Default', points = 100, y0 = 'uniform', makeGraphs = True, alpha = 0, printInfo = True ):
+	def __init__( self, game, tf = 'Default', points = 100, y0 = 'uniform', makeGraphs = True, alpha = 0, printInfo = True, long_run = False ):
 		"""A game given by a 2d numpy array 'game', along with the final stopping time for the integrator 'tf
 		(default = 100).
 
@@ -33,13 +33,19 @@ class replicator:
 
 		Y0: can be 'uniform' or 'random' or an array of your choice.
 
-		alpha: a measure of how assorted the population is."""
+		alpha: a measure of how assorted the population is.
+
+		If long_run is set to true, default False, then the number of generations is multiplied by 10,
+		do this to be more certain of convergence. Will have no effect if you specify tf manually.
+		"""
 
 		self.game = np.array( game )
 		self.alpha = alpha
 		self.makeGraphs = makeGraphs
 		self.printInfo = printInfo
 		self.dim = len(game)
+		self.long_run = long_run
+
 		if y0 == 'uniform':
 			self.y0 = [1/float(self.dim)]*self.dim
 		elif y0 == 'random':
@@ -51,6 +57,8 @@ class replicator:
 		##Set the default end time, or use the input value
 		if tf == 'Default':
 			self.tf = 50*self.dim
+			if long_run:
+				self.tf *= 10
 		else:
 			self.tf = tf
 		##A vector of points at which to return y
